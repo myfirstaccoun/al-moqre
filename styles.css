@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Tajawal", sans-serif;
+}
+
+body {
+    background-color: #f3f3f3;
+}
+
+.cont {
+    max-width: 600px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+}
+
+.input {
+    margin: 5px 0 20px;
+}
+
+label {
+    margin-bottom: 0px;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+}
+
+
+.start-button, .stop-button, .play-button {
+    border: 0;
+    background-color: #0088cc;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+    margin: 20px 0;
+}
+
+.start-button:hover {
+    background-color: #006699;
+}
+
+.start-button:active {
+    background-color: #005577;
+}
+
+.play-button {
+    background-color: rgb(0, 211, 0);
+    display: none;
+}
+
+.play-button:hover {
+    background-color: #009908;
+}
+
+.play-button:active {
+    background-color: #007706;
+}
+
+.stop-button {
+    background-color: red;
+    display: none;
+}
+
+.stop-button:hover {
+    background-color: #990000;
+}
+
+.stop-button:active {
+    background-color: #770000;
+}
+
+@media (max-width: 630px) {
+    .cont {
+        position: absolute;
+        width: 95%;
+        top: 0px;
+        right: 2.5%;
+    }
+}

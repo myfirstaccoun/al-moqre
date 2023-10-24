@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./صور/المقرئ.png" type="image/png"> 
+    <title>المقرئ</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script defer src="./main.js"></script>
+</head>
+<body>
+    <audio style="display: none;" controls>
+        <source src="https://a.equran.me/Ahmed-Alajamy/002120.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="cont" dir="rtl">
+        <label>إسم القارئ</label>
+        <input class="input reader-name" dir="ltr" value="Ahmed-Alajamy" type="text" placeholder="إسم القارئ">
+        
+        <label>رقم السورة</label>
+        <input class="input surah-num" min="1" max="114" value="1" type="number" placeholder="رقم السورة">
+        
+        <label>إبدأ من</label>
+        <input class="input start-from" min="1" value="1" type="number" placeholder="إبدأ من">
+        
+        <label>إنتهِ إلى</label>
+        <input class="input end-to" min="2" max="286" value="5" type="number" placeholder="إنتهِ إلى">
+        
+        <label>كرر المجموعة</label>
+        <input class="input repeat-num" min="1" value="1" type="number" placeholder="كرر المجموعة">
+        
+        <label>كرر الآية</label>
+        <input class="input repeat-verse-num" min="1" value="1" type="number" placeholder="كرر الآية">
+        
+        <button class="start-button">إبدأ</button>
+        <button class="play-button">أكمل</button>
+        <button class="stop-button">أوقف</button>
+    </div>
+
+</body>
+</html>
