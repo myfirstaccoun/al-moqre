@@ -43,6 +43,12 @@ function read() {// تكرار مجموعة الآيات
 
         read();
     }
+
+    // إخفاء زر الإيقاف والتشغيل
+    if(tmpRepeatVerseCurrent == repeatVerseCurrent) {
+        playBtn.style.display = "none";
+        stopBtn.style.display = "none";
+    }
 }
 
 let audio = document.querySelector("audio");
