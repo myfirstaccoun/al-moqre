@@ -14,38 +14,42 @@ function makeZeroNum(num, chars = 3) {// 10, 3 ==> "010"
 }
 
 function repeatVerse(speed = 1) {// تكرار كل آية
-    if((repeatVerseCurrent <= repeatVerseNum && currentVerse < endIn) || (repeatVerseCurrent < repeatVerseNum && currentVerse == endIn) || (currentVerse == endIn && repeatVerseCurrent == repeatVerseNum && startIn == endIn)) {
+    if(repeatVerseCurrent <= repeatVerseNum && currentVerse <= endIn) {
         source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
         audio.playbackRate = speed;
         audio.play();
-
+        
         repeatVerseCurrent++;
     } else if(currentVerse < endIn) {
         currentVerse++;
-        repeatVerseCurrent = 1;
+        repeatVerseCurrent = 2;
 
         source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
         audio.playbackRate = speed;
         audio.play();
+    } else {
+        isReadEnd = 1;
     }
 }
 
 function read() {// تكرار مجموعة الآيات
-    let tmpRepeatVerseCurrent = repeatVerseCurrent;
+    // تكرار الآية
     if(currentVerse <= endIn) {
         repeatVerse();
     }
     
-    if((repeatVerseCurrent == repeatVerseNum || (repeatVerseCurrent > repeatVerseNum && startIn == endIn)) && (currentVerse == endIn || (currentVerse > endIn && startIn == endIn)) && repeatAllCurrent < repeatAllNum && tmpRepeatVerseCurrent == repeatVerseCurrent) {
+    // تكرار مجموعة الآيات
+    if((repeatVerseCurrent > repeatVerseNum || (repeatVerseCurrent > repeatVerseNum && startIn == endIn)) && (currentVerse == endIn || (currentVerse > endIn && startIn == endIn)) && repeatAllCurrent < repeatAllNum && isReadEnd == 1) {
         currentVerse = startIn;
         repeatVerseCurrent = 1;
         repeatAllCurrent++;
+        isReadEnd = 0;
 
         read();
     }
 
     // إخفاء زر الإيقاف والتشغيل
-    if(tmpRepeatVerseCurrent == repeatVerseCurrent) {
+    if(isReadEnd == 1) {
         playBtn.style.display = "none";
         stopBtn.style.display = "none";
     }
@@ -75,6 +79,7 @@ let repeatAllCurrent = 1;
 let repeatVerseNum = 1;
 let repeatVerseCurrent = 1;
 
+let isReadEnd = -1;
 
 startBtn.onclick = () => {
     readerName = readerNameInput.value;
@@ -89,14 +94,14 @@ startBtn.onclick = () => {
     repeatVerseCurrent = 1;
     repeatAllCurrent = 1;
 
+    playBtn.style.display = "none";
     stopBtn.style.display = "block";
 
+    isReadEnd = 0;
     read();
 }
 
-audio.onended = () => {
-    read();
-}
+audio.onended = () => {read();}
 
 playBtn.onclick = () => {
     playBtn.style.display = "none";
