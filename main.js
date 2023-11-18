@@ -14,20 +14,20 @@ function makeZeroNum(num, chars = 3) {// 10, 3 ==> "010"
 }
 
 function repeatVerse(speed = 1) {// تكرار كل آية
-    if(repeatVerseCurrent <= repeatVerseNum && currentVerse <= endIn) {
+    if(((repeatVerseCurrent <= repeatVerseNum && currentVerse == startIn) || (repeatVerseCurrent < repeatVerseNum && currentVerse > startIn)) && currentVerse <= endIn) {// تكرار الآية لم ينتهي
         source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
         audio.playbackRate = speed;
         audio.play();
         
         repeatVerseCurrent++;
-    } else if(currentVerse < endIn) {
+    } else if(currentVerse < endIn) {// تكرار الآية انتهى وفي الآية < الأخيرة
         currentVerse++;
-        repeatVerseCurrent = 2;
+        repeatVerseCurrent = 1;
 
         source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
         audio.playbackRate = speed;
         audio.play();
-    } else {
+    } else {// تكرار الآية انتهى وفي الآية == الأخيرة
         isReadEnd = 1;
     }
 }
@@ -39,7 +39,7 @@ function read() {// تكرار مجموعة الآيات
     }
     
     // تكرار مجموعة الآيات
-    if((repeatVerseCurrent > repeatVerseNum || (repeatVerseCurrent > repeatVerseNum && startIn == endIn)) && (currentVerse == endIn || (currentVerse > endIn && startIn == endIn)) && repeatAllCurrent < repeatAllNum && isReadEnd == 1) {
+    if(isReadEnd == 1 && repeatAllCurrent < repeatAllNum) {
         currentVerse = startIn;
         repeatVerseCurrent = 1;
         repeatAllCurrent++;
@@ -72,14 +72,14 @@ let stopBtn = document.querySelector(".stop-button");
 let readerName = "Ahmed-Alajamy";
 let startIn = 1;
 let endIn = 6;
-let currentVerse = 1;
+let currentVerse = 1; // i
+let repeatAllCurrent = 1; // i
+let repeatVerseCurrent = 1; // i
 
 let repeatAllNum = 1;
-let repeatAllCurrent = 1;
 let repeatVerseNum = 1;
-let repeatVerseCurrent = 1;
-
 let isReadEnd = -1;
+
 
 startBtn.onclick = () => {
     readerName = readerNameInput.value;
