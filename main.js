@@ -14,12 +14,18 @@ function makeZeroNum(num, chars = 3) {// 10, 3 ==> "010"
 }
 
 function repeatVerse(speed = 1) {// تكرار كل آية
-    if(((repeatVerseCurrent <= repeatVerseNum && currentVerse == startIn) || (repeatVerseCurrent < repeatVerseNum && currentVerse > startIn)) && currentVerse <= endIn) {// تكرار الآية لم ينتهي
+    if(repeatVerseCurrent <= repeatVerseNum && currentVerse <= endIn) {// تكرار الآية لم ينتهي
         source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
         audio.playbackRate = speed;
         audio.play();
         
         repeatVerseCurrent++;
+        if(repeatVerseCurrent > repeatVerseNum) {// تكرار الآية انتهى
+            currentVerse++;
+            repeatVerseCurrent = 1;
+            
+            currentVerse > endIn? isReadEnd = 1 : "";
+        }
     } else if(currentVerse < endIn) {// تكرار الآية انتهى وفي الآية < الأخيرة
         currentVerse++;
         repeatVerseCurrent = 1;
@@ -32,10 +38,12 @@ function repeatVerse(speed = 1) {// تكرار كل آية
     }
 }
 
-function read() {// تكرار مجموعة الآيات
+function read(speed = 1) {// تكرار مجموعة الآيات
+    let tmpEnd = JSON.stringify([currentVerse, repeatVerseCurrent]);
+    
     // تكرار الآية
     if(currentVerse <= endIn) {
-        repeatVerse();
+        repeatVerse(speed);
     }
     
     // تكرار مجموعة الآيات
@@ -45,11 +53,11 @@ function read() {// تكرار مجموعة الآيات
         repeatAllCurrent++;
         isReadEnd = 0;
 
-        read();
+        read(speed);
     }
 
     // إخفاء زر الإيقاف والتشغيل
-    if(isReadEnd == 1) {
+    if(isReadEnd == 1 && tmpEnd == JSON.stringify([currentVerse, repeatVerseCurrent])) {
         playBtn.style.display = "none";
         stopBtn.style.display = "none";
     }
@@ -76,6 +84,8 @@ let currentVerse = 1; // i
 let repeatAllCurrent = 1; // i
 let repeatVerseCurrent = 1; // i
 
+let speed = 1;
+
 let repeatAllNum = 1;
 let repeatVerseNum = 1;
 let isReadEnd = -1;
@@ -98,10 +108,10 @@ startBtn.onclick = () => {
     stopBtn.style.display = "block";
 
     isReadEnd = 0;
-    read();
+    read(speed);
 }
 
-audio.onended = () => {read();}
+audio.onended = () => {read(speed);}
 
 playBtn.onclick = () => {
     playBtn.style.display = "none";
