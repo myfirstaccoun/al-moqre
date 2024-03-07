@@ -14,50 +14,57 @@ function makeZeroNum(num, chars = 3) {// 10, 3 ==> "010"
 }
 
 function repeatVerse(speed = 1) {// تكرار كل آية
-    if(repeatVerseCurrent <= repeatVerseNum && currentVerse <= endIn) {// تكرار الآية لم ينتهي
-        source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
-        audio.playbackRate = speed;
-        audio.play();
-        
-        repeatVerseCurrent++;
-        if(repeatVerseCurrent > repeatVerseNum) {// تكرار الآية انتهى
+    if(currentVerse <= endIn) {// الآية الحالية <= الآية الأخيرة
+        if(repeatVerseCurrent <= repeatVerseNum) {// تكرار الآية لم ينتهي
+            source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
+            audio.playbackRate = speed;
+            audio.play();
+            
+            repeatVerseCurrent++;
+            if(repeatVerseCurrent > repeatVerseNum) {// تكرار الآية انتهى
+                currentVerse++;
+                repeatVerseCurrent = 1;
+                
+                if(currentVerse > endIn) {// انتهى من آخر آية بتكرارها
+                    isReadEnd = 1;
+                }
+            }
+        } else {// تكرار الآية انتهى
             currentVerse++;
             repeatVerseCurrent = 1;
-            
-            currentVerse > endIn? isReadEnd = 1 : "";
-        }
-    } else if(currentVerse < endIn) {// تكرار الآية انتهى وفي الآية < الأخيرة
-        currentVerse++;
-        repeatVerseCurrent = 1;
 
-        source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
-        audio.playbackRate = speed;
-        audio.play();
-    } else {// تكرار الآية انتهى وفي الآية == الأخيرة
+            if(currentVerse > endIn) {// انتهت الآيات
+                isReadEnd = 1;
+            }
+        }
+    } else {// انتهى من آخر آية
+        currentVerse = startIn;
+        repeatVerseCurrent = 1;
         isReadEnd = 1;
     }
 }
 
 function read(speed = 1) {// تكرار مجموعة الآيات
-    let tmpEnd = JSON.stringify([currentVerse, repeatVerseCurrent]);
-    
-    // تكرار الآية
-    if(currentVerse <= endIn) {
+    /******** 
+     * currentVerse الآية اللي شغالة حاليا
+     * repeatVerseCurrent الآية الحالية اتكررت كام مرة
+     * repeatVerseNum المفروض يكرر الآية الحالية كام مرة
+     * isReadEnd هل الآية خلصت تكرار
+     * 
+     * repeatAllCurrent رقم المجموعة الحالية
+     * repeatAllNum المفروض الآيات كام مرة (مجموعة)
+    *********/
+
+    if(currentVerse <= endIn) {// تكرار الآية
         repeatVerse(speed);
-    }
-    
-    // تكرار مجموعة الآيات
-    if(isReadEnd == 1 && repeatAllCurrent < repeatAllNum) {
+    } else if(repeatAllCurrent < repeatAllNum) {// تكرار المجموعة
         currentVerse = startIn;
         repeatVerseCurrent = 1;
-        repeatAllCurrent++;
         isReadEnd = 0;
-
-        read(speed);
-    }
-
-    // إخفاء زر الإيقاف والتشغيل
-    if(isReadEnd == 1 && tmpEnd == JSON.stringify([currentVerse, repeatVerseCurrent])) {
+        repeatAllCurrent++;
+    
+        repeatVerse(speed);
+    } else {// إخفاء الأزرار بعد الإنتهاء
         playBtn.style.display = "none";
         stopBtn.style.display = "none";
     }
@@ -75,7 +82,6 @@ let repeatVerseNumInput = document.querySelector(".repeat-verse-num");
 let startBtn = document.querySelector(".start-button");
 let playBtn = document.querySelector(".play-button");
 let stopBtn = document.querySelector(".stop-button");
-
 
 let readerName = "Ahmed-Alajamy";
 let startIn = 1;
