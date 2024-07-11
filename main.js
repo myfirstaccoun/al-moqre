@@ -16,7 +16,7 @@ function makeZeroNum(num, chars = 3) {// 10, 3 ==> "010"
 function repeatVerse(speed = 1) {// تكرار كل آية
     if(currentVerse <= endIn) {// الآية الحالية <= الآية الأخيرة
         if(repeatVerseCurrent <= repeatVerseNum) {// تكرار الآية لم ينتهي
-            source.src = `https://a.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
+            source.src = `https://obj.equran.me/${readerName}/${makeZeroNum(surahNum)}${makeZeroNum(currentVerse)}.mp3`; audio.load();
             audio.playbackRate = speed;
             audio.play();
             
